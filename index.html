@@ -256,35 +256,35 @@
         };
 
         const LIBRARY = [
-            { id: 'end_block', type: 'CONTROL', label: '} CERRAR_ESTRUCTURA', code: '}', complexity: 0, noise: 0, power: 0, desc: 'FINALIZA EL ÚLTIMO SCOPE.', isCloser: true },
-            { id: 'loop_files', type: 'LOGIC', label: 'FOR_EACH_FILE', code: 'foreach(file) {', complexity: 5, noise: 30, power: 0, desc: 'ITERA SISTEMA ARCHIVOS.', isContainer: true },
-            { id: 'loop_network', type: 'LOGIC', label: 'FOR_EACH_IP', code: 'foreach(ip) {', complexity: 15, noise: 60, power: 0, desc: 'ITERA SUBNET RED.', isContainer: true },
-            { id: 'loop_processes', type: 'LOGIC', label: 'FOR_EACH_PID', code: 'foreach(pid) {', complexity: 10, noise: 5, power: 0, desc: 'ITERA PROCESOS RAM.', isContainer: true },
-            { id: 'if_admin', type: 'LOGIC', label: 'IF_ROOT_PRIVS', code: 'if (root) {', complexity: 2, noise: 0, power: 0, desc: 'CHEQUEA PERMISOS.', isContainer: true },
-            { id: 'check_internet', type: 'LOGIC', label: 'IF_WAN_UP', code: 'if (wan) {', complexity: 5, noise: 5, power: 0, desc: 'CHEQUEA CONEXION EXTERNA.', isContainer: true },
-            { id: 'try_catch', type: 'LOGIC', label: 'TRY_CATCH_ERR', code: 'try {', complexity: 15, noise: 0, power: 0, desc: 'MANEJO DE EXCEPCIONES.', isContainer: true },
-            { id: 'sleep_timer', type: 'LOGIC', label: 'SYS_SLEEP', code: 'sleep(600)', complexity: 10, noise: -15, power: 0, desc: 'EVASION POR TIEMPO.' },
-            { id: 'c2_connect', type: 'NET', label: 'BIND_C2_SHELL', code: 'socket(C2)', complexity: 20, noise: 40, power: 300, desc: 'CONEXION REVERSA.' },
-            { id: 'smb_spread', type: 'NET', label: 'SMB_PROPAGATE', code: 'smb_copy()', complexity: 50, noise: 80, power: 500, desc: 'MOVIMIENTO LATERAL.' },
-            { id: 'dns_tunnel', type: 'NET', label: 'DNS_EXFILTRATE', code: 'dns_req()', complexity: 60, noise: 10, power: 150, desc: 'TUNELEO DE DATOS.' },
-            { id: 'port_scan', type: 'NET', label: 'SYN_PORT_SCAN', code: 'syn_scan()', complexity: 20, noise: 90, power: 100, desc: 'ESCANEO RUIDOSO.' },
-            { id: 'download_stage2', type: 'NET', label: 'FETCH_PAYLOAD', code: 'wget(bin)', complexity: 15, noise: 50, power: 200, desc: 'DESCARGA FASE 2.' },
-            { id: 'service_create', type: 'PERSISTENCE', label: 'SC_CREATE_DAEMON', code: 'sc create', complexity: 40, noise: 60, power: 300, desc: 'NUEVO SERVICIO.' },
-            { id: 'reg_run', type: 'PERSISTENCE', label: 'REGISTRY_RUN_KEY', code: 'reg add', complexity: 15, noise: 40, power: 100, desc: 'PERSISTENCIA REGISTRO.' },
-            { id: 'schtasks', type: 'PERSISTENCE', label: 'CRON_SCHTASKS', code: 'schtasks', complexity: 25, noise: 30, power: 150, desc: 'TAREA PROGRAMADA.' },
-            { id: 'wmi_persist', type: 'PERSISTENCE', label: 'WMI_SUBSCRIPTION', code: 'wmic event', complexity: 80, noise: 20, power: 400, desc: 'PERSISTENCIA FILELESS.' },
-            { id: 'account_create', type: 'PERSISTENCE', label: 'ADD_GHOST_USER', code: 'net user', complexity: 10, noise: 90, power: 250, desc: 'CUENTA TRASERA.' },
-            { id: 'bits_job', type: 'PERSISTENCE', label: 'BITSADMIN_JOB', code: 'bitsadmin', complexity: 40, noise: 25, power: 150, desc: 'ABUSO PROTOCOLO BITS.' },
-            { id: 'encrypt_aes', type: 'PAYLOAD', label: 'CRYPTO_AES256', code: 'aes_enc()', complexity: 50, noise: 100, power: 500, desc: 'CIFRADO DE DATOS.' },
-            { id: 'wiper', type: 'PAYLOAD', label: 'MBR_WIPER', code: 'dd if=zero', complexity: 60, noise: 100, power: 900, desc: 'SOBRESCRIBIR DISCO.' },
-            { id: 'exfil_data', type: 'PAYLOAD', label: 'DATA_UPLOAD', code: 'post(data)', complexity: 30, noise: 50, power: 300, desc: 'ROBO DE INFORMACION.' },
-            { id: 'keylogger', type: 'PAYLOAD', label: 'HOOK_KEYBOARD', code: 'sethook()', complexity: 30, noise: 10, power: 200, desc: 'INTERCEPCION TECLADO.' },
-            { id: 'screen_capture', type: 'PAYLOAD', label: 'FRAME_GRABBER', code: 'get_dc()', complexity: 20, noise: 15, power: 150, desc: 'CAPTURA DE PANTALLA.' },
-            { id: 'obfuscate', type: 'EVASION', label: 'OBFUSCATE_XOR', code: 'obf() {', complexity: 20, noise: 0, power: 0, desc: 'OCULTA INSTRUCCIONES.', isContainer: true },
-            { id: 'process_inject', type: 'EVASION', label: 'PROC_HOLLOWING', code: 'inject()', complexity: 90, noise: 20, power: 400, desc: 'INYECCION DE CODIGO.' },
-            { id: 'timestomp', type: 'EVASION', label: 'MACE_TIMESTOMP', code: 'touch()', complexity: 20, noise: 5, power: 50, desc: 'MANIPULACION FORENSE.' },
-            { id: 'delete_logs', type: 'EVASION', label: 'CLEAR_EVENTLOGS', code: 'wevtutil', complexity: 10, noise: 100, power: 100, desc: 'BORRADO DE RASTROS.' },
-            { id: 'dll_hijack', type: 'EVASION', label: 'DLL_SEARCH_ORDER', code: 'dll_drop()', complexity: 60, noise: 15, power: 150, desc: 'SECUESTRO LIBRERIAS.' }
+            { id: 'end_block', type: 'CONTROL', label: '} CERRAR: FIN_ESTRUCTURA', code: '}', complexity: 0, noise: 0, power: 0, desc: 'FINALIZA EL ÚLTIMO SCOPE ACTIVO.', isCloser: true },
+            { id: 'loop_files', type: 'LOGIC', label: 'BUCLE: POR_CADA_ARCHIVO', code: 'foreach(file) {', complexity: 5, noise: 30, power: 0, desc: 'ITERA SOBRE SISTEMA DE ARCHIVOS.', isContainer: true },
+            { id: 'loop_network', type: 'LOGIC', label: 'BUCLE: POR_CADA_IP', code: 'foreach(ip) {', complexity: 15, noise: 60, power: 0, desc: 'ITERA DIRECCIONES EN SUBNET.', isContainer: true },
+            { id: 'loop_processes', type: 'LOGIC', label: 'BUCLE: POR_CADA_PROCESO', code: 'foreach(pid) {', complexity: 10, noise: 5, power: 0, desc: 'ITERA PROCESOS ACTIVOS EN RAM.', isContainer: true },
+            { id: 'if_admin', type: 'LOGIC', label: 'CONDICIÓN: SI_ES_ADMIN', code: 'if (root) {', complexity: 2, noise: 0, power: 0, desc: 'VERIFICA PRIVILEGIOS DE ROOT.', isContainer: true },
+            { id: 'check_internet', type: 'LOGIC', label: 'CONDICIÓN: SI_HAY_RED', code: 'if (wan) {', complexity: 5, noise: 5, power: 0, desc: 'VERIFICA CONECTIVIDAD EXTERNA.', isContainer: true },
+            { id: 'try_catch', type: 'LOGIC', label: 'ESTRUCTURA: TRY_CATCH', code: 'try {', complexity: 15, noise: 0, power: 0, desc: 'INTERCEPTA EXCEPCIONES/ERRORES.', isContainer: true },
+            { id: 'sleep_timer', type: 'LOGIC', label: 'FUNCIÓN: DORMIR_TIEMPO', code: 'sleep(600)', complexity: 10, noise: -15, power: 0, desc: 'RETARDO PARA EVADIR SANDBOXING.' },
+            { id: 'c2_connect', type: 'NET', label: 'CONEXIÓN: SHELL_REVERSA', code: 'socket(C2)', complexity: 20, noise: 40, power: 300, desc: 'CONEXIÓN ESTABLECIDA CON SERVIDOR.' },
+            { id: 'smb_spread', type: 'NET', label: 'LATERAL: PROPAGAR_SMB', code: 'smb_copy()', complexity: 50, noise: 80, power: 500, desc: 'MOVIMIENTO LATERAL ESTILO GUSANO.' },
+            { id: 'dns_tunnel', type: 'NET', label: 'EXFILTRACIÓN: TÚNEL_DNS', code: 'dns_req()', complexity: 60, noise: 10, power: 150, desc: 'TÚNEL DE DATOS OCULTO VÍA DNS.' },
+            { id: 'port_scan', type: 'NET', label: 'RED: ESCANEO_PUERTOS', code: 'syn_scan()', complexity: 20, noise: 90, power: 100, desc: 'BARRIDO DE PUERTOS (RUIDOSO).' },
+            { id: 'download_stage2', type: 'NET', label: 'RED: DESCARGAR_FASE_2', code: 'wget(bin)', complexity: 15, noise: 50, power: 200, desc: 'OBTIENE PAYLOAD SECUNDARIO.' },
+            { id: 'service_create', type: 'PERSISTENCE', label: 'PERSISTENCIA: CREAR_SERVICIO', code: 'sc create', complexity: 40, noise: 60, power: 300, desc: 'CREA DAEMON (REQUIERE ADMIN).' },
+            { id: 'reg_run', type: 'PERSISTENCE', label: 'PERSISTENCIA: CLAVE_REGISTRO', code: 'reg add', complexity: 15, noise: 40, power: 100, desc: 'PERSISTENCIA MEDIANTE AUTOARRANQUE.' },
+            { id: 'schtasks', type: 'PERSISTENCE', label: 'PERSISTENCIA: TAREA_CRON', code: 'schtasks', complexity: 25, noise: 30, power: 150, desc: 'PROGRAMACIÓN DE EJECUCIÓN.' },
+            { id: 'wmi_persist', type: 'PERSISTENCE', label: 'PERSISTENCIA: EVENTO_WMI', code: 'wmic event', complexity: 80, noise: 20, power: 400, desc: 'PERSISTENCIA FILELESS EN SISTEMA.' },
+            { id: 'account_create', type: 'PERSISTENCE', label: 'PERSISTENCIA: CUENTA_OCULTA', code: 'net user', complexity: 10, noise: 90, power: 250, desc: 'CREACIÓN DE USUARIO BACKDOOR.' },
+            { id: 'bits_job', type: 'PERSISTENCE', label: 'PERSISTENCIA: TRABAJO_BITS', code: 'bitsadmin', complexity: 40, noise: 25, power: 150, desc: 'ABUSO DE PROTOCOLO BITS NATIVO.' },
+            { id: 'encrypt_aes', type: 'PAYLOAD', label: 'PAYLOAD: CIFRAR_RANSOMWARE', code: 'aes_enc()', complexity: 50, noise: 100, power: 500, desc: 'CIFRADO DESTRUCTIVO DE DATOS.' },
+            { id: 'wiper', type: 'PAYLOAD', label: 'PAYLOAD: BORRAR_DISCO', code: 'dd if=zero', complexity: 60, noise: 100, power: 900, desc: 'SOBREESCRITURA TOTAL DE MBR.' },
+            { id: 'exfil_data', type: 'PAYLOAD', label: 'PAYLOAD: ROBAR_DATOS', code: 'post(data)', complexity: 30, noise: 50, power: 300, desc: 'ENVÍO DE DATOS A COMANDO Y CONTROL.' },
+            { id: 'keylogger', type: 'PAYLOAD', label: 'PAYLOAD: REGISTRAR_TECLAS', code: 'sethook()', complexity: 30, noise: 10, power: 200, desc: 'INTERCEPCIÓN ACTIVA DE TECLADO.' },
+            { id: 'screen_capture', type: 'PAYLOAD', label: 'PAYLOAD: CAPTURAR_PANTALLA', code: 'get_dc()', complexity: 20, noise: 15, power: 150, desc: 'ESPIONAJE MEDIANTE GRABACIÓN VISUAL.' },
+            { id: 'obfuscate', type: 'EVASION', label: 'EVASIÓN: OFUSCAR_BLOQUE', code: 'obf() {', complexity: 20, noise: 0, power: 0, desc: 'ENVUELVE Y OCULTA INSTRUCCIONES INTERNAS.', isContainer: true },
+            { id: 'process_inject', type: 'EVASION', label: 'EVASIÓN: INYECTAR_PROCESO', code: 'inject()', complexity: 90, noise: 20, power: 400, desc: 'VACIADO E INYECCIÓN EN PROCESO.' },
+            { id: 'timestomp', type: 'EVASION', label: 'EVASIÓN: FALSIFICAR_FECHA', code: 'touch()', complexity: 20, noise: 5, power: 50, desc: 'MANIPULACIÓN DE TIMESTAMPS FORENSES.' },
+            { id: 'delete_logs', type: 'EVASION', label: 'EVASIÓN: BORRAR_LOGS', code: 'wevtutil', complexity: 10, noise: 100, power: 100, desc: 'ELIMINACIÓN DE REGISTROS DEL SISTEMA.' },
+            { id: 'dll_hijack', type: 'EVASION', label: 'EVASIÓN: SECUESTRAR_DLL', code: 'dll_drop()', complexity: 60, noise: 15, power: 150, desc: 'ABUSO EN ORDEN DE CARGA DE LIBRERÍAS.' }
         ];
 
         let workspace = [];
@@ -338,10 +338,15 @@
                     btn.className = `w-full text-left p-2 border-2 ${borderColor} ${bgColor} hover:brightness-110 transition-none group relative overflow-hidden block-hover brutal-shadow-sm mb-1`;
                     btn.onclick = () => addBlock(block.id);
                     btn.innerHTML = `
-                        <div class="flex justify-between items-center relative z-10">
-                            <span class="font-bold text-[10px] text-white tracking-wide uppercase">${block.label}</span>
-                            <i data-lucide="plus" width="14" height="14" class="opacity-0 group-hover:opacity-100 text-white"></i>
+                        <div class="flex items-center gap-2 relative z-10 w-full">
+                            <div class="${typeInfo.color} bg-black/50 p-1 border border-slate-600 brutal-shadow-sm shrink-0">
+                                <i data-lucide="${typeInfo.icon}" width="12" height="12"></i>
+                            </div>
+                            <div class="flex flex-col text-left flex-1 min-w-0">
+                                <span class="font-bold text-[10px] text-white tracking-wide uppercase truncate">${block.label}</span>
+                            </div>
                         </div>
+                        <i data-lucide="plus" width="14" height="14" class="opacity-0 group-hover:opacity-100 text-white absolute right-2 top-1/2 -translate-y-1/2 z-20"></i>
                     `;
                     list.appendChild(btn);
                 });
@@ -422,14 +427,17 @@
                 
                 el.innerHTML = `
                     <div class="flex-1 p-2 border-2 border-l-[6px] ${typeInfo.border} ${bgColorClass} relative brutal-shadow-sm transition-none hover:border-white">
-                        <div class="flex justify-between items-center text-white">
-                            <div class="flex items-center gap-3">
-                                <div class="${iconColorClass}">
+                        <div class="flex justify-between items-start text-white gap-2">
+                            <div class="flex items-start gap-2 min-w-0">
+                                <div class="mt-0.5 ${iconColorClass} bg-black/50 p-1 border border-slate-600 brutal-shadow-sm shrink-0">
                                     <i data-lucide="${typeInfo.icon}" width="14" height="14"></i>
                                 </div>
-                                <span class="font-bold text-[11px] tracking-wide uppercase">${block.label}</span>
+                                <div class="flex flex-col min-w-0">
+                                    <span class="font-bold text-[11px] tracking-wide uppercase truncate">${block.label}</span>
+                                    <span class="text-[9px] text-slate-400 font-mono mt-0.5 break-words">${block.desc}</span>
+                                </div>
                             </div>
-                            <code class="text-[10px] bg-black px-2 py-0.5 text-slate-300 font-mono hidden sm:block border border-slate-600">
+                            <code class="text-[10px] bg-black px-2 py-0.5 text-slate-300 font-mono hidden sm:block border border-slate-600 shrink-0">
                                 ${block.code}
                             </code>
                         </div>
