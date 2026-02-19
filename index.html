@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Malware Scratch - Creado por Pascal para el máster</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        .scrollbar-thin::-webkit-scrollbar { width: 8px; }
+        .scrollbar-thin::-webkit-scrollbar-track { background: #0f172a; border-left: 1px solid #1e293b; }
+        .scrollbar-thin::-webkit-scrollbar-thumb { background: #475569; }
+        .scrollbar-thin::-webkit-scrollbar-thumb:hover { background: #64748b; }
+        
+        .brutal-shadow { box-shadow: 4px 4px 0px rgba(0,0,0,0.8); }
+        .brutal-shadow-sm { box-shadow: 2px 2px 0px rgba(0,0,0,0.8); }
+        .brutal-shadow-btn:active { box-shadow: 0px 0px 0px rgba(0,0,0,0); transform: translate(4px, 4px); }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .animate-fadeIn { animation: fadeIn 0.1s ease-out forwards; }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        .cursor-blink { animation: blink 1s step-end infinite; }
+
+        .block-hover:hover { transform: translateX(4px); border-color: #fff; }
+        
+        .console-font { font-family: 'Consolas', 'Monaco', 'Courier New', monospace; }
+
+        [data-theme="matrix"] .bg-slate-900 { background-color: #020502 !important; }
+        [data-theme="matrix"] .bg-slate-800 { background-color: #050a05 !important; }
+        [data-theme="matrix"] .bg-slate-800\/50 { background-color: rgba(5, 10, 5, 0.5) !important; }
+        [data-theme="matrix"] .bg-slate-700 { background-color: #0a140a !important; }
+        [data-theme="matrix"] .bg-\[\#0d1117\] { background-color: #000000 !important; }
+        [data-theme="matrix"] .border-slate-700 { border-color: #143314 !important; }
+        [data-theme="matrix"] .border-slate-800 { border-color: #0a1a0a !important; }
+        [data-theme="matrix"] .text-slate-200 { color: #00ff00 !important; }
+        [data-theme="matrix"] .text-slate-300 { color: #33ff33 !important; }
+        [data-theme="matrix"] .text-slate-400 { color: #1a991a !important; }
+        [data-theme="matrix"] .text-slate-500 { color: #106610 !important; }
+
+        [data-theme="crimson"] .bg-slate-900 { background-color: #0f0202 !important; }
+        [data-theme="crimson"] .bg-slate-800 { background-color: #1a0505 !important; }
+        [data-theme="crimson"] .bg-slate-800\/50 { background-color: rgba(26, 5, 5, 0.5) !important; }
+        [data-theme="crimson"] .bg-slate-700 { background-color: #2a0a0a !important; }
+        [data-theme="crimson"] .bg-\[\#0d1117\] { background-color: #050000 !important; }
+        [data-theme="crimson"] .border-slate-700 { border-color: #4a1515 !important; }
+        [data-theme="crimson"] .border-slate-800 { border-color: #330f0f !important; }
+        [data-theme="crimson"] .text-slate-200 { color: #ff9999 !important; }
+        [data-theme="crimson"] .text-slate-300 { color: #ff6666 !important; }
+        [data-theme="crimson"] .text-slate-400 { color: #cc4444 !important; }
+        [data-theme="crimson"] .text-slate-500 { color: #993333 !important; }
+
+        [data-theme="abyss"] .bg-slate-900 { background-color: #02050f !important; }
+        [data-theme="abyss"] .bg-slate-800 { background-color: #050a1a !important; }
+        [data-theme="abyss"] .bg-slate-800\/50 { background-color: rgba(5, 10, 26, 0.5) !important; }
+        [data-theme="abyss"] .bg-slate-700 { background-color: #0a142a !important; }
+        [data-theme="abyss"] .bg-\[\#0d1117\] { background-color: #000205 !important; }
+        [data-theme="abyss"] .border-slate-700 { border-color: #15254a !important; }
+        [data-theme="abyss"] .border-slate-800 { border-color: #0f1a33 !important; }
+        [data-theme="abyss"] .text-slate-200 { color: #99bbff !important; }
+        [data-theme="abyss"] .text-slate-300 { color: #6699ff !important; }
+        [data-theme="abyss"] .text-slate-400 { color: #4477cc !important; }
+        [data-theme="abyss"] .text-slate-500 { color: #335599 !important; }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-200 font-mono h-screen flex flex-col overflow-hidden selection:bg-green-900 selection:text-green-200" data-theme="default">
+
+    <header class="h-14 bg-slate-800 border-b-2 border-slate-700 flex items-center justify-between px-6 shrink-0 z-20">
+        <div class="flex items-center gap-4">
+            <div class="border-2 border-green-500 p-1 bg-green-900/30 text-green-400 brutal-shadow-sm">
+                <i data-lucide="terminal" width="18" height="18"></i>
+            </div>
+            <div class="flex flex-col">
+                <h1 class="text-lg font-black tracking-widest text-slate-100 uppercase leading-none">
+                    Malware Scratch
+                </h1>
+                <span class="text-[10px] text-green-400 mt-1 uppercase">Creado por Pascal para el máster</span>
+            </div>
+        </div>
+        
+        <div class="flex items-center gap-6">
+            <select id="theme-selector" onchange="setTheme(this.value)" class="bg-slate-800 text-xs text-slate-300 border-2 border-slate-600 px-2 py-1 outline-none hidden md:block cursor-pointer brutal-shadow-sm focus:border-green-500">
+                <option value="default">UI: DEFAULT_DARK</option>
+                <option value="matrix">UI: SYS_MATRIX</option>
+                <option value="crimson">UI: RED_TEAM</option>
+                <option value="abyss">UI: DEEP_WEB</option>
+            </select>
+
+            <div class="text-right hidden md:block border-l-2 border-slate-700 pl-6">
+               <div class="text-[10px] text-slate-400 uppercase tracking-widest">THREAT_SCORE</div>
+               <div id="score-display" class="text-2xl font-black tabular-nums leading-none text-slate-500 mt-1">
+                 0000
+               </div>
+            </div>
+            <button id="run-btn" onclick="analyzeCode()" disabled class="flex items-center gap-2 px-6 py-2 font-bold border-2 bg-slate-800 border-slate-600 text-slate-500 cursor-not-allowed group transition-none">
+                <i data-lucide="cpu" width="16" height="16" class="fill-current"></i> 
+                <span id="run-btn-text">COMPILAR</span>
+            </button>
+        </div>
+    </header>
+
+    <div class="flex flex-1 overflow-hidden">
+        
+        <div class="w-80 bg-slate-900 border-r-2 border-slate-700 flex flex-col shrink-0 z-10">
+            <div class="p-3 bg-slate-800 border-b-2 border-slate-700 flex justify-between items-center">
+                <h2 class="text-xs font-bold text-slate-200 uppercase flex items-center gap-2 tracking-wide">
+                    <i data-lucide="code" width="14" height="14" class="text-blue-400"></i> Toolset
+                </h2>
+                <span class="text-[10px] border border-slate-600 px-1 text-slate-400 bg-slate-900">v4.0</span>
+            </div>
+            
+            <div class="p-2 bg-slate-900 border-b border-slate-800 text-[10px] text-slate-400 text-center flex items-center justify-center gap-2">
+                <span class="font-bold text-green-400 border border-green-800 px-1 bg-green-900/20">INFO</span> Usa '}' para cerrar estructuras lógicas.
+            </div>
+
+            <div id="library-container" class="flex-1 overflow-y-auto p-4 space-y-6 scrollbar-thin">
+            </div>
+        </div>
+
+        <div class="flex-1 bg-[#0d1117] relative flex flex-col min-w-0">
+            <div class="h-8 bg-slate-800 border-b-2 border-slate-700 flex items-center justify-between px-4 text-xs select-none">
+                <div class="flex gap-4 font-bold">
+                    <span class="text-green-400">main.cpp</span>
+                    <span class="text-slate-600">|</span>
+                    <span class="text-slate-400 uppercase">Editor</span>
+                </div>
+                <button onclick="clearWorkspace()" class="text-slate-400 hover:text-red-400 flex gap-2 items-center transition-none border border-transparent hover:border-red-500 px-2 py-0.5">
+                    <i data-lucide="trash" width="12" height="12"></i> CLEAR_ALL
+                </button>
+            </div>
+            
+            <div class="flex-1 overflow-y-auto p-8 relative scrollbar-thin" id="workspace-scroll">
+                
+                <div class="absolute inset-0 pointer-events-none opacity-[0.05]" 
+                     style="background-image: linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px); background-size: 40px 40px;">
+                </div>
+
+                <div id="empty-state" class="absolute inset-0 flex flex-col items-center justify-center text-slate-600 pointer-events-none select-none">
+                    <i data-lucide="terminal-square" width="48" height="48" class="mb-4 opacity-20"></i>
+                    <p class="text-xs font-bold opacity-70 uppercase tracking-widest">Workspace Vacío</p>
+                    <p class="text-[10px] opacity-40 mt-2 font-mono">Esperando inyección de código...</p>
+                </div>
+
+                <div class="space-y-1.5 relative z-10 max-w-4xl mx-auto pb-20 font-mono">
+                    <div class="w-48 bg-slate-800 text-slate-300 px-4 py-2 text-[11px] font-bold border-2 border-slate-600 select-none brutal-shadow-sm mb-3">
+                        int main(void) {
+                    </div>
+
+                    <div id="workspace-blocks" class="min-h-[40px] flex flex-col gap-1.5 pl-4 border-l-2 border-slate-700/50 ml-4 py-2"></div>
+
+                    <div class="w-48 bg-slate-800 text-slate-300 px-4 py-2 text-[11px] font-bold border-2 border-slate-600 select-none brutal-shadow-sm mt-3">
+                        &nbsp;&nbsp;return 0;<br>}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="w-[400px] bg-slate-900 border-l-2 border-slate-700 flex flex-col shrink-0 z-10">
+            
+            <div id="analysis-panel" class="flex-1 p-5 border-b-2 border-slate-700 overflow-y-auto scrollbar-thin bg-slate-900">
+                <h2 class="text-xs font-bold text-slate-200 uppercase mb-6 flex gap-2 border-b-2 border-slate-800 pb-2">
+                    <i data-lucide="activity" width="14" height="14" class="text-red-400"></i> Telemetría
+                </h2>
+                
+                <div id="waiting-analysis" class="flex flex-col items-center justify-center h-48 text-slate-600 border-2 border-slate-800 border-dashed">
+                    <p class="text-[10px] uppercase font-bold tracking-widest animate-pulse">Standby...</p>
+                </div>
+
+                <div id="results-container" class="hidden space-y-6 animate-fadeIn">
+                    <div id="status-box" class="p-4 border-2 text-center brutal-shadow">
+                        <div class="text-[10px] uppercase text-slate-400 font-bold mb-2 tracking-widest border-b border-current pb-1 inline-block">Clasificación</div>
+                        <div id="status-text" class="text-base font-black tracking-widest uppercase"></div>
+                    </div>
+                    
+                    <div class="space-y-5 border-2 border-slate-800 p-4 bg-slate-900">
+                        <div class="space-y-1.5">
+                            <div class="flex justify-between text-[10px] font-bold uppercase">
+                                <span class="text-slate-400">Poder_Efectivo</span>
+                                <span id="val-power" class="text-red-400">0</span>
+                            </div>
+                            <div class="h-3 border border-slate-700 bg-slate-950 p-[1px]">
+                                <div id="bar-power" class="h-full bg-red-500 transition-all duration-300" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        <div class="space-y-1.5">
+                            <div class="flex justify-between text-[10px] font-bold uppercase">
+                                <span class="text-slate-400">Sinergia_Logic</span>
+                                <span id="val-complexity" class="text-blue-400">0</span>
+                            </div>
+                            <div class="h-3 border border-slate-700 bg-slate-950 p-[1px]">
+                                <div id="bar-complexity" class="h-full bg-blue-500 transition-all duration-300" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        <div class="space-y-1.5">
+                            <div class="flex justify-between text-[10px] font-bold uppercase">
+                                <span class="text-slate-400">Ruido_Detect</span>
+                                <span id="val-noise" class="text-yellow-400">0</span>
+                            </div>
+                            <div class="h-3 border border-slate-700 bg-slate-950 p-[1px]">
+                                <div id="bar-noise" class="h-full bg-yellow-500 transition-all duration-300" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="border-2 border-slate-700 p-4 bg-slate-800">
+                        <p class="mb-3 text-[10px] font-bold text-green-400 uppercase tracking-widest border-b border-slate-600 pb-1">Fórmula VirusScan v4:</p>
+                        <code class="block text-[11px] text-white font-mono mb-3 bg-black p-2 border border-slate-600">
+                            Score = (ImpactoEfectivo * Sinergia) - (Ruido * 4)
+                        </code>
+                        <ul class="space-y-2">
+                            <li class="text-[10px] text-slate-300 flex items-start gap-2 leading-relaxed">
+                                <span class="text-red-400 font-bold mt-0.5">></span>
+                                <span>``ImpactoEfectivo'': Daño calculado según el contexto en el que se encuentra el código (dentro de bucles, admin, red).</span>
+                            </li>
+                            <li class="text-[10px] text-slate-300 flex items-start gap-2 leading-relaxed">
+                                <span class="text-blue-400 font-bold mt-0.5">></span>
+                                <span>``Sinergia'': Bonus progresivo obtenido por una complejidad lógica adecuada y el uso de bloques como Try/Catch u Ofuscación.</span>
+                            </li>
+                            <li class="text-[10px] text-slate-300 flex items-start gap-2 leading-relaxed">
+                                <span class="text-yellow-400 font-bold mt-0.5">></span>
+                                <span>``Ruido'': Penalización directa aplicada por realizar acciones fácilmente detectables o visibles para las defensas.</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="h-64 bg-[#0a0a0a] p-4 font-mono text-[10px] overflow-y-auto border-t-2 border-slate-700 scrollbar-thin" id="console-container">
+                <div class="text-slate-500 mb-3 select-none border-b border-slate-800 pb-2 flex justify-between sticky top-0 bg-[#0a0a0a] z-10 uppercase font-bold tracking-widest">
+                    <span>STD_OUT</span>
+                    <span>root@lab:~#</span>
+                </div>
+                <div id="logs-content" class="console-font tracking-tight"></div>
+                <div id="console-cursor" class="hidden flex items-center gap-2 text-green-500 mt-1">
+                    <span class="cursor-blink bg-green-500 w-2 h-3 inline-block"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const BLOCK_TYPES = {
+            CONTROL: { color: 'text-slate-100', bg: 'bg-slate-700', border: 'border-slate-500', icon: 'corner-down-left' }, 
+            LOGIC: { color: 'text-yellow-400', bg: 'bg-yellow-900', border: 'border-yellow-500', icon: 'cpu' },
+            NET: { color: 'text-green-400', bg: 'bg-green-900', border: 'border-green-500', icon: 'network' },
+            PERSISTENCE: { color: 'text-blue-400', bg: 'bg-blue-900', border: 'border-blue-500', icon: 'hard-drive' },
+            PAYLOAD: { color: 'text-red-400', bg: 'bg-red-900', border: 'border-red-500', icon: 'skull' },
+            EVASION: { color: 'text-purple-400', bg: 'bg-purple-900', border: 'border-purple-500', icon: 'ghost' }
+        };
+
+        const LIBRARY = [
+            { id: 'end_block', type: 'CONTROL', label: '} CERRAR_ESTRUCTURA', code: '}', complexity: 0, noise: 0, power: 0, desc: 'FINALIZA EL ÚLTIMO SCOPE.', isCloser: true },
+            { id: 'loop_files', type: 'LOGIC', label: 'FOR_EACH_FILE', code: 'foreach(file) {', complexity: 5, noise: 30, power: 0, desc: 'ITERA SISTEMA ARCHIVOS.', isContainer: true },
+            { id: 'loop_network', type: 'LOGIC', label: 'FOR_EACH_IP', code: 'foreach(ip) {', complexity: 15, noise: 60, power: 0, desc: 'ITERA SUBNET RED.', isContainer: true },
+            { id: 'loop_processes', type: 'LOGIC', label: 'FOR_EACH_PID', code: 'foreach(pid) {', complexity: 10, noise: 5, power: 0, desc: 'ITERA PROCESOS RAM.', isContainer: true },
+            { id: 'if_admin', type: 'LOGIC', label: 'IF_ROOT_PRIVS', code: 'if (root) {', complexity: 2, noise: 0, power: 0, desc: 'CHEQUEA PERMISOS.', isContainer: true },
+            { id: 'check_internet', type: 'LOGIC', label: 'IF_WAN_UP', code: 'if (wan) {', complexity: 5, noise: 5, power: 0, desc: 'CHEQUEA CONEXION EXTERNA.', isContainer: true },
+            { id: 'try_catch', type: 'LOGIC', label: 'TRY_CATCH_ERR', code: 'try {', complexity: 15, noise: 0, power: 0, desc: 'MANEJO DE EXCEPCIONES.', isContainer: true },
+            { id: 'sleep_timer', type: 'LOGIC', label: 'SYS_SLEEP', code: 'sleep(600)', complexity: 10, noise: -15, power: 0, desc: 'EVASION POR TIEMPO.' },
+            { id: 'c2_connect', type: 'NET', label: 'BIND_C2_SHELL', code: 'socket(C2)', complexity: 20, noise: 40, power: 300, desc: 'CONEXION REVERSA.' },
+            { id: 'smb_spread', type: 'NET', label: 'SMB_PROPAGATE', code: 'smb_copy()', complexity: 50, noise: 80, power: 500, desc: 'MOVIMIENTO LATERAL.' },
+            { id: 'dns_tunnel', type: 'NET', label: 'DNS_EXFILTRATE', code: 'dns_req()', complexity: 60, noise: 10, power: 150, desc: 'TUNELEO DE DATOS.' },
+            { id: 'port_scan', type: 'NET', label: 'SYN_PORT_SCAN', code: 'syn_scan()', complexity: 20, noise: 90, power: 100, desc: 'ESCANEO RUIDOSO.' },
+            { id: 'download_stage2', type: 'NET', label: 'FETCH_PAYLOAD', code: 'wget(bin)', complexity: 15, noise: 50, power: 200, desc: 'DESCARGA FASE 2.' },
+            { id: 'service_create', type: 'PERSISTENCE', label: 'SC_CREATE_DAEMON', code: 'sc create', complexity: 40, noise: 60, power: 300, desc: 'NUEVO SERVICIO.' },
+            { id: 'reg_run', type: 'PERSISTENCE', label: 'REGISTRY_RUN_KEY', code: 'reg add', complexity: 15, noise: 40, power: 100, desc: 'PERSISTENCIA REGISTRO.' },
+            { id: 'schtasks', type: 'PERSISTENCE', label: 'CRON_SCHTASKS', code: 'schtasks', complexity: 25, noise: 30, power: 150, desc: 'TAREA PROGRAMADA.' },
+            { id: 'wmi_persist', type: 'PERSISTENCE', label: 'WMI_SUBSCRIPTION', code: 'wmic event', complexity: 80, noise: 20, power: 400, desc: 'PERSISTENCIA FILELESS.' },
+            { id: 'account_create', type: 'PERSISTENCE', label: 'ADD_GHOST_USER', code: 'net user', complexity: 10, noise: 90, power: 250, desc: 'CUENTA TRASERA.' },
+            { id: 'bits_job', type: 'PERSISTENCE', label: 'BITSADMIN_JOB', code: 'bitsadmin', complexity: 40, noise: 25, power: 150, desc: 'ABUSO PROTOCOLO BITS.' },
+            { id: 'encrypt_aes', type: 'PAYLOAD', label: 'CRYPTO_AES256', code: 'aes_enc()', complexity: 50, noise: 100, power: 500, desc: 'CIFRADO DE DATOS.' },
+            { id: 'wiper', type: 'PAYLOAD', label: 'MBR_WIPER', code: 'dd if=zero', complexity: 60, noise: 100, power: 900, desc: 'SOBRESCRIBIR DISCO.' },
+            { id: 'exfil_data', type: 'PAYLOAD', label: 'DATA_UPLOAD', code: 'post(data)', complexity: 30, noise: 50, power: 300, desc: 'ROBO DE INFORMACION.' },
+            { id: 'keylogger', type: 'PAYLOAD', label: 'HOOK_KEYBOARD', code: 'sethook()', complexity: 30, noise: 10, power: 200, desc: 'INTERCEPCION TECLADO.' },
+            { id: 'screen_capture', type: 'PAYLOAD', label: 'FRAME_GRABBER', code: 'get_dc()', complexity: 20, noise: 15, power: 150, desc: 'CAPTURA DE PANTALLA.' },
+            { id: 'obfuscate', type: 'EVASION', label: 'OBFUSCATE_XOR', code: 'obf() {', complexity: 20, noise: 0, power: 0, desc: 'OCULTA INSTRUCCIONES.', isContainer: true },
+            { id: 'process_inject', type: 'EVASION', label: 'PROC_HOLLOWING', code: 'inject()', complexity: 90, noise: 20, power: 400, desc: 'INYECCION DE CODIGO.' },
+            { id: 'timestomp', type: 'EVASION', label: 'MACE_TIMESTOMP', code: 'touch()', complexity: 20, noise: 5, power: 50, desc: 'MANIPULACION FORENSE.' },
+            { id: 'delete_logs', type: 'EVASION', label: 'CLEAR_EVENTLOGS', code: 'wevtutil', complexity: 10, noise: 100, power: 100, desc: 'BORRADO DE RASTROS.' },
+            { id: 'dll_hijack', type: 'EVASION', label: 'DLL_SEARCH_ORDER', code: 'dll_drop()', complexity: 60, noise: 15, power: 150, desc: 'SECUESTRO LIBRERIAS.' }
+        ];
+
+        let workspace = [];
+        let isRunning = false;
+
+        function saveState() {
+            localStorage.setItem('mws_v4_workspace', JSON.stringify(workspace));
+        }
+
+        function loadState() {
+            const saved = localStorage.getItem('mws_v4_workspace');
+            if (saved) {
+                workspace = JSON.parse(saved);
+            }
+            const theme = localStorage.getItem('mws_v4_theme') || 'default';
+            setTheme(theme);
+            document.getElementById('theme-selector').value = theme;
+        }
+
+        function setTheme(theme) {
+            document.body.setAttribute('data-theme', theme);
+            localStorage.setItem('mws_v4_theme', theme);
+        }
+
+        function renderLibrary() {
+            const container = document.getElementById('library-container');
+            const categories = {};
+
+            LIBRARY.forEach(block => {
+                if (!categories[block.type]) categories[block.type] = [];
+                categories[block.type].push(block);
+            });
+
+            const order = ['CONTROL', 'LOGIC', 'NET', 'PERSISTENCE', 'PAYLOAD', 'EVASION'];
+
+            order.forEach(type => {
+                if(!categories[type]) return;
+                const typeInfo = BLOCK_TYPES[type];
+                const section = document.createElement('div');
+                section.innerHTML = `
+                    <h3 class="text-[10px] font-bold text-slate-500 mb-2 uppercase tracking-widest pl-1 border-b border-slate-700 pb-1">${type}</h3>
+                    <div class="space-y-1"></div>
+                `;
+                const list = section.querySelector('div');
+
+                categories[type].forEach(block => {
+                    const btn = document.createElement('button');
+                    const borderColor = block.isCloser ? 'border-slate-500' : typeInfo.border;
+                    const bgColor = block.isCloser ? 'bg-slate-700' : typeInfo.bg;
+                    
+                    btn.className = `w-full text-left p-2 border-2 ${borderColor} ${bgColor} hover:brightness-110 transition-none group relative overflow-hidden block-hover brutal-shadow-sm mb-1`;
+                    btn.onclick = () => addBlock(block.id);
+                    btn.innerHTML = `
+                        <div class="flex justify-between items-center relative z-10">
+                            <span class="font-bold text-[10px] text-white tracking-wide uppercase">${block.label}</span>
+                            <i data-lucide="plus" width="14" height="14" class="opacity-0 group-hover:opacity-100 text-white"></i>
+                        </div>
+                    `;
+                    list.appendChild(btn);
+                });
+                container.appendChild(section);
+                container.appendChild(document.createElement('div')).className = "h-4";
+            });
+            lucide.createIcons();
+        }
+
+        function addBlock(blockId) {
+            const block = LIBRARY.find(b => b.id === blockId);
+            if (!block) return;
+            workspace.push({ ...block, uid: Date.now() + Math.random() });
+            saveState();
+            updateUI();
+        }
+
+        function removeBlock(uid) {
+            if(isRunning) return;
+            workspace = workspace.filter(b => b.uid !== uid);
+            saveState();
+            updateUI();
+        }
+
+        function clearWorkspace() {
+            if(isRunning) return;
+            workspace = [];
+            document.getElementById('logs-content').innerHTML = '';
+            document.getElementById('score-display').textContent = '0000';
+            document.getElementById('score-display').className = 'text-2xl font-black tabular-nums leading-none text-slate-500 mt-1';
+            resetAnalysis();
+            saveState();
+            updateUI();
+        }
+
+        function updateUI() {
+            renderWorkspace();
+            
+            const emptyState = document.getElementById('empty-state');
+            if (workspace.length === 0) {
+                emptyState.classList.remove('hidden');
+                emptyState.classList.add('flex');
+            } else {
+                emptyState.classList.add('hidden');
+                emptyState.classList.remove('flex');
+            }
+
+            const btn = document.getElementById('run-btn');
+            if (workspace.length > 0 && !isRunning) {
+                btn.disabled = false;
+                btn.classList.remove('bg-slate-800', 'border-slate-600', 'text-slate-500', 'cursor-not-allowed');
+                btn.classList.add('bg-green-700', 'border-green-500', 'text-white', 'hover:bg-green-600', 'brutal-shadow-btn', 'active:bg-green-800');
+            } else {
+                btn.disabled = true;
+                btn.classList.add('bg-slate-800', 'border-slate-600', 'text-slate-500', 'cursor-not-allowed');
+                btn.classList.remove('bg-green-700', 'border-green-500', 'text-white', 'hover:bg-green-600', 'brutal-shadow-btn', 'active:bg-green-800');
+            }
+        }
+
+        function renderWorkspace() {
+            const container = document.getElementById('workspace-blocks');
+            container.innerHTML = '';
+
+            let currentIndent = 0;
+
+            workspace.forEach(block => {
+                const typeInfo = BLOCK_TYPES[block.type];
+                
+                if (block.isCloser && currentIndent > 0) currentIndent--;
+
+                const marginLeft = `ml-${currentIndent * 6}`; 
+                
+                const bgColorClass = block.isCloser ? 'bg-slate-700' : typeInfo.bg;
+                const iconColorClass = typeInfo.color;
+
+                const el = document.createElement('div');
+                el.className = `relative group flex items-start animate-fadeIn ${marginLeft}`;
+                
+                el.innerHTML = `
+                    <div class="flex-1 p-2 border-2 border-l-[6px] ${typeInfo.border} ${bgColorClass} relative brutal-shadow-sm transition-none hover:border-white">
+                        <div class="flex justify-between items-center text-white">
+                            <div class="flex items-center gap-3">
+                                <div class="${iconColorClass}">
+                                    <i data-lucide="${typeInfo.icon}" width="14" height="14"></i>
+                                </div>
+                                <span class="font-bold text-[11px] tracking-wide uppercase">${block.label}</span>
+                            </div>
+                            <code class="text-[10px] bg-black px-2 py-0.5 text-slate-300 font-mono hidden sm:block border border-slate-600">
+                                ${block.code}
+                            </code>
+                        </div>
+                        <button onclick="removeBlock(${block.uid})" class="absolute -right-3 -top-3 bg-red-600 text-white hover:bg-red-500 p-1 border-2 border-red-900 opacity-0 group-hover:opacity-100 brutal-shadow-sm z-20">
+                            <i data-lucide="x" width="12" height="12"></i>
+                        </button>
+                    </div>
+                `;
+                container.appendChild(el);
+
+                if (block.isContainer) currentIndent++;
+            });
+            lucide.createIcons();
+            
+            const scrollArea = document.getElementById('workspace-scroll');
+            scrollArea.scrollTop = scrollArea.scrollHeight;
+        }
+
+        function analyzeCode() {
+            if (workspace.length === 0 || isRunning) return;
+            
+            isRunning = true;
+            updateUI();
+            
+            document.getElementById('run-btn-text').innerText = 'COMPILING';
+            document.getElementById('logs-content').innerHTML = '';
+            document.getElementById('console-cursor').classList.remove('hidden');
+            resetAnalysis();
+
+            const addLog = (msg, type = 'info') => {
+                const div = document.createElement('div');
+                div.className = 'mb-1 animate-fadeIn font-mono text-[10px] uppercase';
+                
+                let color = 'text-slate-300';
+                if (type === 'error' || msg.includes('FAIL') || msg.includes('CRITICAL')) color = 'text-red-500 font-bold';
+                else if (type === 'warn' || msg.includes('WARN')) color = 'text-yellow-500 font-bold';
+                else if (type === 'success' || msg.includes('SUCCESS') || msg.includes('APT')) color = 'text-green-500 font-bold';
+                else if (type === 'info') color = 'text-blue-400';
+
+                div.innerHTML = `<span class="${color}">${msg}</span>`;
+                document.getElementById('logs-content').appendChild(div);
+                const consoleContainer = document.getElementById('console-container');
+                consoleContainer.scrollTop = consoleContainer.scrollHeight;
+            };
+
+            addLog('[*] INICIANDO MOTOR LÓGICO V4.0...', 'info');
+
+            setTimeout(() => {
+                let scopeStack = []; 
+                let totalPower = 0;
+                let totalComplexity = 0;
+                let totalNoise = 0;
+                let logicErrors = 0;
+
+                workspace.forEach(b => {
+                    totalNoise += b.noise;
+                    if(b.isContainer) totalComplexity += 5;
+                });
+
+                for (let i = 0; i < workspace.length; i++) {
+                    const block = workspace[i];
+                    addLog(`[+] EXEC_LÍNEA_${i+1}: ${block.id}`, 'info');
+
+                    if (block.isCloser) {
+                        if (scopeStack.length > 0) {
+                            const closed = scopeStack.pop();
+                            addLog(`  [-] CERRANDO_ÁMBITO: ${closed}`, 'info');
+                        } else {
+                            addLog(`  [!] WARN: CIERRE '}' HUÉRFANO.`, 'warn');
+                            logicErrors++;
+                        }
+                        continue;
+                    }
+
+                    const inAdmin = scopeStack.includes('if_admin');
+                    const inFilesLoop = scopeStack.includes('loop_files');
+                    const inNetLoop = scopeStack.includes('loop_network');
+                    const inTry = scopeStack.includes('try_catch');
+                    const inObfuscation = scopeStack.includes('obfuscate');
+                    const inInternet = scopeStack.includes('check_internet');
+
+                    let effectivePower = block.power;
+                    let blockNoise = block.noise;
+
+                    if (inObfuscation) {
+                        blockNoise *= 0.1; 
+                        if (effectivePower > 0) addLog(`  [+] APT: RUTINA OFUSCADA DETECTADA.`, 'success');
+                    }
+
+                    if (['encrypt_aes', 'exfil_data'].includes(block.id)) {
+                        if (inFilesLoop) {
+                            effectivePower *= 10;
+                            addLog(`  [+] SUCCESS: BUCLE I/O MASIVO.`, 'success');
+                        } else {
+                            effectivePower = 10;
+                            addLog(`  [!] WARN: I/O SINGULAR DETECTADO. INEFICIENTE.`, 'warn');
+                        }
+                    }
+
+                    if (block.id === 'smb_spread') {
+                        if (inNetLoop) {
+                            effectivePower *= 8;
+                            addLog(`  [+] SUCCESS: PROPAGACIÓN DE GUSANO INICIADA.`, 'success');
+                        } else {
+                            effectivePower = 0;
+                            addLog(`  [-] FAIL: GUSANO SIN OBJETIVOS DE RED.`, 'error');
+                        }
+                    }
+
+                    if (['c2_connect', 'download_stage2'].includes(block.id)) {
+                        if (!inInternet) {
+                            addLog(`  [!] WARN: LLAMADA DE RED SIN PRE-CHECK.`, 'warn');
+                        } else {
+                            totalComplexity += 20; 
+                        }
+                    }
+
+                    if (['wiper', 'service_create', 'delete_logs', 'wmi_persist'].includes(block.id)) {
+                        if (inAdmin) {
+                            addLog(`  [+] SUCCESS: CONTEXTO ROOT VALIDADO.`, 'success');
+                        } else {
+                            effectivePower = 0;
+                            addLog(`  [-] CRITICAL: ACCESO DENEGADO (UID!=0).`, 'error');
+                            logicErrors++;
+                            totalNoise += 50; 
+                        }
+                    }
+
+                    if (['keylogger', 'screen_capture'].includes(block.id)) {
+                        if (inObfuscation) effectivePower *= 2;
+                    }
+
+                    if (inTry && effectivePower > 0) {
+                        totalComplexity += 10;
+                    }
+
+                    totalPower += effectivePower;
+                    totalNoise += (blockNoise - block.noise); 
+
+                    if (block.isContainer) {
+                        scopeStack.push(block.id);
+                        addLog(`  [+] ABRIENDO_ÁMBITO: ${block.id}`, 'info');
+                    }
+                }
+
+                if (scopeStack.length > 0) {
+                    addLog(`[!] WARN: SCOPES ABIERTOS AL FINALIZAR: ${scopeStack.length}`, 'warn');
+                    totalComplexity -= (scopeStack.length * 15);
+                }
+
+                const synergy = Math.max(1, (totalComplexity / 10));
+                let rawScore = (totalPower * synergy) - (totalNoise * 4);
+                
+                if (logicErrors > 2) rawScore *= 0.5;
+                if (totalPower === 0) rawScore = 0;
+
+                let finalScore = Math.max(0, Math.min(9999, Math.round(rawScore)));
+
+                let status = "FUD_UNDETECTABLE";
+                let colorClass = "text-green-500";
+                let boxClass = "bg-green-900 border-green-500";
+                let scoreColor = "text-green-500";
+
+                if (finalScore === 0) {
+                    status = "CÓDIGO_INERTE";
+                    colorClass = "text-slate-500";
+                    boxClass = "bg-slate-800 border-slate-600";
+                    scoreColor = "text-slate-500";
+                } else if (finalScore < 2500) {
+                    status = "SCRIPT_KIDDIE_DETECTADO";
+                    colorClass = "text-red-500";
+                    boxClass = "bg-red-950 border-red-600";
+                    scoreColor = "text-red-500";
+                } else if (finalScore < 7000) {
+                    status = "MALWARE_GENÉRICO";
+                    colorClass = "text-yellow-500";
+                    boxClass = "bg-yellow-950 border-yellow-600";
+                    scoreColor = "text-yellow-500";
+                } else {
+                    status = "AMENAZA_AVANZADA_APT";
+                    colorClass = "text-purple-400";
+                    boxClass = "bg-purple-950 border-purple-500";
+                    scoreColor = "text-purple-400";
+                }
+
+                addLog('--------------------------------');
+                addLog(`[*] RESULTADO FINAL: ${status}`);
+
+                finishAnalysis({
+                    power: Math.round(totalPower),
+                    complexity: Math.round(totalComplexity),
+                    noise: Math.round(totalNoise),
+                    status: status,
+                    colorClass: colorClass,
+                    boxClass: boxClass,
+                    scoreColor: scoreColor,
+                    score: finalScore
+                });
+
+            }, 800);
+        }
+
+        function resetAnalysis() {
+            document.getElementById('waiting-analysis').classList.remove('hidden');
+            document.getElementById('waiting-analysis').classList.add('flex');
+            document.getElementById('results-container').classList.add('hidden');
+        }
+
+        function finishAnalysis(data) {
+            document.getElementById('waiting-analysis').classList.add('hidden');
+            document.getElementById('waiting-analysis').classList.remove('flex');
+            document.getElementById('results-container').classList.remove('hidden');
+
+            const statusText = document.getElementById('status-text');
+            statusText.innerText = data.status;
+            statusText.className = `text-lg font-black tracking-widest uppercase ${data.colorClass}`;
+            
+            const statusBox = document.getElementById('status-box');
+            statusBox.className = `p-4 border-2 text-center brutal-shadow ${data.boxClass}`;
+
+            updateBar('power', data.power, 6000); 
+            updateBar('complexity', data.complexity, 150); 
+            updateBar('noise', data.noise, 600); 
+
+            const scoreDisplay = document.getElementById('score-display');
+            scoreDisplay.innerText = data.score.toString().padStart(4, '0');
+            scoreDisplay.className = `text-2xl font-black tabular-nums leading-none mt-1 ${data.scoreColor}`;
+
+            isRunning = false;
+            document.getElementById('run-btn-text').innerText = 'COMPILAR';
+            document.getElementById('console-cursor').classList.add('hidden');
+            updateUI();
+        }
+
+        function updateBar(id, value, scaleFactor) {
+            document.getElementById(`val-${id}`).innerText = value;
+            const percentage = Math.min(100, (value / scaleFactor) * 100);
+            document.getElementById(`bar-${id}`).style.width = `${percentage}%`;
+        }
+
+        loadState();
+        renderLibrary();
+        updateUI();
+
+    </script>
+</body>
+</html>
